@@ -8,7 +8,7 @@
 <DynamicContent
 	bg="bg1"
 	order="right"
-	ImageUrl="src\img\_DSC8906.jpg"
+	ImageUrl="static\image1.jpg"
 	ImageAlt="Keverő"
 	title="Felvétel"
 	text="A stúdiófelvétel során a hangszereket egymás után vesszük föl külön sávokra (overdubbing), így
