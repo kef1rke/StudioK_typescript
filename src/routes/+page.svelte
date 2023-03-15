@@ -8,7 +8,7 @@
 <DynamicContent
 	bg="bg1"
 	order="right"
-	ImageUrl="static\image1.jpg"
+	ImageUrl="/image1.jpg"
 	ImageAlt="Keverő"
 	title="Felvétel"
 	text="A stúdiófelvétel során a hangszereket egymás után vesszük föl külön sávokra (overdubbing), így
@@ -24,7 +24,7 @@
 <DynamicContent
 	bg="bg2"
 	order="left"
-	ImageUrl="src\img\_DSC8906.jpg"
+	ImageUrl="/image1.jpg"
 	ImageAlt="Keverő"
 	title="Felvétel"
 	text="A stúdiófelvétel során a hangszereket egymás után vesszük föl külön sávokra (overdubbing), így
@@ -40,7 +40,7 @@
 <DynamicContent
 	bg="bg3"
 	order="right"
-	ImageUrl="src\img\_DSC8906.jpg"
+	ImageUrl="/image1.jpg"
 	ImageAlt="Keverő"
 	title="Felvétel"
 	text="A stúdiófelvétel során a hangszereket egymás után vesszük föl külön sávokra (overdubbing), így

@@ -15,7 +15,7 @@ module.exports = {
 		},
 		extend: {
 			backgroundImage: {
-				'hero-header': "url('static\background-image.jpg')"
+				'hero-header': "url('/background-image.jpg')"
 			}
 			// fontFamily: {
 			// 	sans: ['Red-Hat', 'src/fontRed_Hat_Display.zip']
