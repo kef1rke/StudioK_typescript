@@ -1,0 +1,9 @@
+@tailwind base;
+@layer base {
+	html {
+		@apply text-[#D1BC9D];
+		/* font-family: Red-Hat; */
+	}
+}
+@tailwind components;
+@tailwind utilities;
