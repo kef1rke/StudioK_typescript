@@ -10,6 +10,7 @@ module.exports = {
 			xl: '1440px'
 		},
 		colors: {
+			current: 'currentColor',
 			bg2: '#61472F',
 			bg3: '#8B7450'
 		},

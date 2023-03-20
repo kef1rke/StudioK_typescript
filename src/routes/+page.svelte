@@ -1,9 +1,15 @@
-<script>
+<script lang="ts">
 	import TitleComponent from '../components/TitleComponent.svelte';
 	import DynamicContent from '../components/DynamicContent/DynamicContent.svelte';
 	import Footer from '../components/Footer.svelte';
+	import { onMount } from 'svelte';
+	import PageLoader from '../components/PageLoader.svelte';
+
+	let ready: boolean = false;
+	onMount(() => (ready = true));
 </script>
 
+<PageLoader />
 <TitleComponent />
 <DynamicContent
 	bg="bg1"
