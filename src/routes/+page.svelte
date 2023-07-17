@@ -48,8 +48,8 @@ A Stúdió K-ban 24 sávot tudunk rögzíteni egyszerre, ami elég egy nagyobb z
 <DynamicContent
 	bg="bg2"
 	order="left"
-	ImageUrl="/image3.jpg"
-	ImageAlt="Keverő"
+	ImageUrl=""
+	ImageAlt=""
 	title="Stúdió klip"
 	text="Akit megfog a dalod, az kíváncsi lesz arra is, hogy ki adja elő. A legtöbb zenekari klip vagy koncerten, vagy stúdióban készül, és nem véletlenül. Ha a zene érdekes, érdekes a zenész is, ha érdekes a zenész, érdekes lesz a zene is.
 Lehetőség van a stúdióban fölvenni a klipet, akár hozott zenei anyagra, akár itt felvett számra, de lehet élőfelvételt is rögzíteni, ahol szigorúan a videón látott játék hallható a klipben. Némely NKA által meghirdetett pályázatban ez utóbbi követelmény."
