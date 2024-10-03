@@ -9,7 +9,7 @@
 	onMount(() => (ready = true));
 </script>
 
-<PageLoader />
+<!-- <PageLoader /> -->
 <TitleComponent />
 <DynamicContent
 	bg="bg1"
@@ -64,4 +64,4 @@ Lehetőség van a stúdióban fölvenni a klipet, akár hozott zenei anyagra, ak
 A hangcsillapítás, azaz a „jó akusztika” érdekében a padlófűtés fölé kemény padlóburkolatként vad rakású füstölt tölgy ipari parketta került.
 "
 />
-<Footer email="studiok@gmail.com" phone="+36302940210" address="Szeged" />
+<Footer email="studiokszeged@gmail.com" phone="+36302940210" address="Szeged" />
