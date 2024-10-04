@@ -5,7 +5,8 @@
 	export let bg: string;
 	export let title: string;
 	export let text: string;
-	export let ImageUrl: string, ImageAlt: string;
+	export let ImageUrl: string;
+	export let ImageAlt: string;
 	export let order: string;
 
 	const bgColor = (backgroundType: string) => {
@@ -26,21 +27,31 @@
 
 <svelte:window bind:innerWidth />
 
-<div style="background-color: {bgColor(bg)}" class="w-full h-fit grid place-items-center p-11">
+<!-- Full screen height for mobile -->
+<div
+	style="background-color: {bgColor(bg)}"
+	class="w-full min-h-screen h-fit grid place-items-center p-11 scroll-snap-start"
+>
 	{#if innerWidth <= 768}
-		<div class="grid-flow-row auto-rows-max sm:gap-0 gap-10 max-w-fit h-min] ">
+		<div class="grid-flow-row auto-rows-max sm:gap-0 gap-10 max-w-fit h-min">
 			<TextComponent {title} {text} />
-			<ImageComponent url={ImageUrl} alt={ImageAlt} />
+			{#if ImageUrl}
+				<ImageComponent url={ImageUrl} alt={ImageAlt} />
+			{/if}
 		</div>
 	{:else}
 		<div
-			class="grid grid-cols-2 xl:gap-16 lg:gap-16 md:gap-10 sm:gap-10 gap-5 max-w-fit xl:w-[1200px] lg:w-[850px] md:w-[700px] "
+			class="grid grid-cols-2 xl:gap-16 lg:gap-16 md:gap-10 sm:gap-10 gap-5 max-w-fit xl:w-[1200px] lg:w-[850px] md:w-[700px]"
 		>
 			{#if order == 'right'}
 				<TextComponent {title} {text} />
-				<ImageComponent url={ImageUrl} alt={ImageAlt} />
+				{#if ImageUrl}
+					<ImageComponent url={ImageUrl} alt={ImageAlt} />
+				{/if}
 			{:else}
-				<ImageComponent url={ImageUrl} alt={ImageAlt} />
+				{#if ImageUrl}
+					<ImageComponent url={ImageUrl} alt={ImageAlt} />
+				{/if}
 				<TextComponent {title} {text} />
 			{/if}
 		</div>

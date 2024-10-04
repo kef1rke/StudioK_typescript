@@ -2,66 +2,103 @@
 	import TitleComponent from '../components/TitleComponent.svelte';
 	import DynamicContent from '../components/DynamicContent/DynamicContent.svelte';
 	import Footer from '../components/Footer.svelte';
-	import { onMount } from 'svelte';
-	import PageLoader from '../components/PageLoader.svelte';
+	import { onMount, afterUpdate, onDestroy } from 'svelte';
+	import content from '../content/content.json';
 
 	let ready: boolean = false;
-	onMount(() => (ready = true));
+	let sections: HTMLElement[] = [];
+	let currentIndex = 0;
+
+	// IntersectionObserver instance
+	let observer: IntersectionObserver;
+
+	function scrollToSection(index: number) {
+		if (sections.length > 0 && sections[index]) {
+			// Debugging: Log the section and index to verify
+			console.log(`Scrolling to section index ${index}:`, sections[index]);
+
+			// Smooth scroll to the section
+			sections[index].scrollIntoView({ behavior: 'smooth' });
+
+			// Update currentIndex after scrolling
+			currentIndex = index;
+		} else {
+			console.error(`Section at index ${index} not found or sections array not ready.`);
+		}
+	}
+
+	// Function to handle intersection observer changes
+	function handleIntersect(entries: IntersectionObserverEntry[]) {
+		entries.forEach((entry) => {
+			if (entry.isIntersecting) {
+				currentIndex = sections.indexOf(entry.target as HTMLElement);
+
+				console.log(
+					`Currently viewing section ${currentIndex}`,
+					content.dynamicContent[currentIndex]
+				);
+			}
+		});
+	}
+
+	onMount(() => {
+		// Initialize the IntersectionObserver
+		observer = new IntersectionObserver(handleIntersect, {
+			threshold: 0.5 // 50% of the section should be visible
+		});
+
+		// Attach the keydown event listener
+		window.addEventListener('keydown', handleKeydown);
+
+		ready = true;
+	});
+
+	// After the component updates, ensure all sections are observed
+	afterUpdate(() => {
+		// Observe each section
+		sections.forEach((section) => {
+			if (section) {
+				observer.observe(section);
+			}
+		});
+	});
+
+	onDestroy(() => {
+		// Cleanup the observer and event listeners on unmount
+		observer.disconnect();
+		window.removeEventListener('keydown', handleKeydown);
+	});
+
+	// Listen for keydown events to detect arrow key presses
+	function handleKeydown(event: KeyboardEvent) {
+		if (event.key === 'ArrowDown' && currentIndex < sections.length - 1) {
+			// Scroll to the next section if down arrow is pressed
+			scrollToSection(currentIndex + 1);
+		} else if (event.key === 'ArrowUp' && currentIndex > 0) {
+			// Scroll to the previous section if up arrow is pressed
+			scrollToSection(currentIndex - 1);
+		}
+	}
 </script>
 
-<!-- <PageLoader /> -->
 <TitleComponent />
-<DynamicContent
-	bg="bg1"
-	order="right"
-	ImageUrl="/image1.jpg"
-	ImageAlt="Keverő"
-	title="Felvétel"
-	text="A stúdiófelvétel során a hangszereket egymás után vesszük föl külön sávokra (overdubbing), így
-			a zenész precízen, az elképzeléseinek megfelelően játszhatja föl a saját szólamát. A
-			szerkesztésnél és keverésnél pedig tág lehetőség nyílik a legjobb előadás és hangzás
-			elérésére. A gitárosok már a felvétel során beállíthatják a mikrofonokat és azokat a fő
-			effekteket és hangzást, ami legjobban illik a mixbe. Ugyanis a lehallgató helyiségben játszva
-			az akusztikailag elszigetelt feljátszó helyiségben bemikrofonozott gitárládákból a játék
-			közben is azt hallhatja, ami majd a felvételen lesz. A gitárokat lehet reampolni, mert
-			párhuzamosan felvesszük a tiszta gitárhangot is, majd azt visszajátszva szabadon lehet a kombó
-			vagy a fej beállításával."
+
+{#each content.dynamicContent as section, index (section.title)}
+	<!-- Wrap DynamicContent in a div and bind this div to the sections array -->
+	<div bind:this={sections[index]} class="min-h-screen flex flex-col justify-center scroll-mt-0">
+		<DynamicContent
+			bg={section.bg}
+			order={section.order}
+			ImageUrl={section.ImageUrl}
+			ImageAlt={section.ImageAlt}
+			title={section.title}
+			text={section.text}
+		/>
+	</div>
+{/each}
+
+<Footer
+	email={content.footer.email}
+	phone={content.footer.phone}
+	address={content.footer.address}
 />
-<DynamicContent
-	bg="bg2"
-	order="left"
-	ImageUrl="/image2.jpg"
-	ImageAlt="Felvevőhelység"
-	title="Élőfelvétel"
-	text="Bár a legjobb minőséget úgy érhetjük el, ha a szólamokat külön-külön vesszük föl, mégis sokszor az élőben rögzített zene olyan többlet lendületet, hangulatot hordoz, akár az apróbb hibák ellenére is, hogy mind a zenészek, mind a közönség eredetibbnek és hitelesebbnek érzi az így készült felvételt.
-A Stúdió K-ban 24 sávot tudunk rögzíteni egyszerre, ami elég egy nagyobb zenekar számára is. Az előadók 8 különböző sztereó mixet kaphatnak a szükséges effektekkel, így már játék közben is jó minőségben és megfelelő arányban hallják zenéjüket. A saját és a többi szólam arányát akár saját maguk is finoman hangolhatják a játék alatt a telefonjukon Wifi-n keresztül.
-"
-/>
-<DynamicContent
-	bg="bg3"
-	order="right"
-	ImageUrl="/image3.jpg"
-	ImageAlt="Keverő"
-	title="Fejhallgatós próba"
-	text="Tagadhatatlan, hogy a próbatermi próbáknak megvan a maguk sajátos hangulata. A beállás egyszerű és gyors, a visszhangos terem és a dobhoz felhúzott hangszerek hangereje pedig jótékonyan fedi el az esetleges hibákat. Viszont a zenészek játék közben ritkán hallják a nekik szükséges szólamokat, jó esetben csak saját magukat, általában azt is csak alig. A Stúdió K-ban lehetőség van fejhallgatós próbákra, amikor a zenész minden hangszernek külön állíthatja a hangerejét, akár az effekteket is, és azt hallhatja, amire szüksége van, a telefonjáról is kezelheti a saját monitor mixét. Kívánság szerint a próba fel is vehető, természetesen sok sávon, ami alkalmas a számok utólagos elemzésére, a szólamok együtt vagy szólóban való meghallgatására."
-/>
-<DynamicContent
-	bg="bg2"
-	order="left"
-	ImageUrl=""
-	ImageAlt=""
-	title="Stúdió klip"
-	text="Akit megfog a dalod, az kíváncsi lesz arra is, hogy ki adja elő. A legtöbb zenekari klip vagy koncerten, vagy stúdióban készül, és nem véletlenül. Ha a zene érdekes, érdekes a zenész is, ha érdekes a zenész, érdekes lesz a zene is.
-Lehetőség van a stúdióban fölvenni a klipet, akár hozott zenei anyagra, akár itt felvett számra, de lehet élőfelvételt is rögzíteni, ahol szigorúan a videón látott játék hallható a klipben. Némely NKA által meghirdetett pályázatban ez utóbbi követelmény."
-/>
-<DynamicContent
-	bg="bg1"
-	order="right"
-	ImageUrl="/image4.jpg"
-	ImageAlt="Akusztika"
-	title="Akusztika"
-	text="A Stúdió K akusztikai terveit Fürjes Andor Tamás zaj- és rezgésvédelmi szakértő készítette. A megfelelő hangszigetelés eléréséhez a falazatot AKKU Z hanggátló tégla adja, a feljátszó helyiségben még egy réteg hanggátló előtétfal épült a födémről rugalmasan függesztett álmennyezethez záródóan (házban ház szerkezet). Az ajtók három rétegű (8-4-6) ragasztott üveggel vannak szerelve, a feljátszó ablaka és az áttekintő ablak kétszer három rétegű ragasztott üvegezésű. A beltéri ajtók HUET CLUB 39 márkájúak.
-A hangcsillapítás, azaz a „jó akusztika” érdekében a padlófűtés fölé kemény padlóburkolatként vad rakású füstölt tölgy ipari parketta került.
-"
-/>
-<Footer email="studiokszeged@gmail.com" phone="+36302940210" address="Szeged" />
