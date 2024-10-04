@@ -2,6 +2,10 @@
 	export let email: string;
 	export let phone: string;
 	export let address: string;
+
+	function scrollToTop() {
+		window.scrollTo({ top: 0, behavior: 'smooth' });
+	}
 </script>
 
 <div class="bg-bg2 w-full h-fit grid place-items-center p-5">
@@ -17,7 +21,16 @@
 			<h2><span style="font-weight:bold;">Cím:</span> {address}</h2>
 		</div>
 		<div class="grid justify-end content-center">
-			<h2 class="font-semibold text-2xl md:text-4xl">StudioK</h2>
+			<h2
+				class="font-semibold text-2xl md:text-4xl cursor-pointer"
+				on:click={scrollToTop}
+				tabindex="0"
+				on:keydown={(event) => (event.key === 'Enter' ? scrollToTop() : null)}
+				aria-label="Scroll to top"
+				role="button"
+			>
+				StudioK
+			</h2>
 		</div>
 	</div>
 </div>
